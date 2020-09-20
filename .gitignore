@@ -1,0 +1,8 @@
+.next
+node_modules
+.env
+.env.build
+/functions/serviceAccount-staging.json
+/functions/serviceAccount-production.json
+firestore.rules
+.firebaserc
