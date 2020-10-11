@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "next"
   },
+  "browser":{
+    "child_process": false
+  } ,
   "keywords": [],
   "author": "",
   "license": "ISC",
