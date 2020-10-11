@@ -1,10 +1,21 @@
+import React, {useEffect, useCallback} from 'react';
 import Link from 'next/Link';
+import {useAuth} from '../authContext';
 
-export default ({ data} ) => {
-
+export default (props) => {
+    const {data} = props;
+    const {user} = useAuth();
+    console.log(user)
     return(
-        <div>
+      <div className="container">
             <h1>Home Pages</h1>
+            {user && (
+              <>
+                <h2>{user.email}</h2>
+                <h2>{user.uid}{user.uid}{user.uid}{user.uid}</h2>
+              </>
+            ) }
+            {!user && (
             <div>
                 {data.map((item, key) => (
                 <ul key={key}>
@@ -14,6 +25,8 @@ export default ({ data} ) => {
                 </ul>
                 ))}
             </div>
+            )}
+
 
             <Link href="/auth/login">
                 <a>Go to Login</a>

@@ -1,6 +1,12 @@
-// import 'bootstrap/dist/css/bootstrap.css'; //global css
-//if we wanna use bootstrap
+import 'bootstrap/dist/css/bootstrap.css'; //global css
 
-export default ({Component, pageProps}) => (
-    <Component {...pageProps} />
+import {AuthProvider} from '../authContext'
+
+const AppComponent = ({Component, pageProps}) => (
+    <AuthProvider>
+        <Component {...pageProps} />
+    </AuthProvider>
+
 )
+
+export default AppComponent;

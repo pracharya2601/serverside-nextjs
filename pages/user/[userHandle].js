@@ -12,7 +12,6 @@ export default function UserHandle(props) {
 };
 
 export const getStaticPaths =  async () => {
-  
   return{
     paths: [{params: {userHandle: 'firstuser'}},{params: {userHandle: 'seconduser'}}],
     fallback: true

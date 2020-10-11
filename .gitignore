@@ -6,3 +6,4 @@ node_modules
 /functions/serviceAccount-production.json
 firestore.rules
 .firebaserc
+secret.json
