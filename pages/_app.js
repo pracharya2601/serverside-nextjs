@@ -1,10 +1,9 @@
 import Head from 'next/head'
 import 'bootstrap/dist/css/bootstrap.css'; //global css
-
 import {AuthProvider} from '../authContext'
 
 //header
-import Navbar from '../components/Navbar';
+import AppBar from '../components/AppBar';
 
 const AppComponent = ({Component, pageProps}) => (
     <AuthProvider>
@@ -12,7 +11,7 @@ const AppComponent = ({Component, pageProps}) => (
         <Head>
             <meta name="viewport" content="viewport-fit=cover" />
         </Head>
-        <Navbar />
+        <AppBar />
         <Component {...pageProps} />
         </>
     </AuthProvider>

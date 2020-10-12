@@ -2,17 +2,19 @@ import React, {useEffect, useCallback} from 'react';
 import Link from 'next/Link';
 import {useAuth} from '../authContext';
 
+import {Container} from 'react-bootstrap';
+
 export default (props) => {
     const {data} = props;
     const {user} = useAuth();
-    console.log(user)
+    console.log('main index-page', user)
     return(
-      <div className="container">
+      <Container>
             <h1>Home Pages</h1>
             {user && (
               <>
                 <h2>{user.email}</h2>
-                <h2>{user.uid}{user.uid}{user.uid}{user.uid}</h2>
+                <h2>{user.uid}</h2>
               </>
             ) }
             {!user && (
@@ -26,16 +28,10 @@ export default (props) => {
                 ))}
             </div>
             )}
-
-
-            <Link href="/auth/login">
-                <a>Go to Login</a>
-            </Link>
-            <br />
             <Link href="/dashboard/maindashboard">
                 <a>Go to Dashboard</a>
             </Link>
-        </div>
+        </Container>
 
     )
 }
