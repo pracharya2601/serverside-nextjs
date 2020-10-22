@@ -2,6 +2,8 @@
 node_modules
 .env
 .env.build
+.env.development
+.env.production
 /functions/serviceAccount-staging.json
 /functions/serviceAccount-production.json
 firestore.rules
