@@ -1,28 +1,30 @@
 import {useState} from 'react';
 import Link from 'next/Link';
+import { useUser } from '../../utils/auth/useUser';
+import { getUserFromCookie } from '../../utils/auth/userCookies'
+
 import {Form, Button, Container, Jumbotron, Alert} from 'react-bootstrap';
-import {firebaseClient} from '../../utils/firebaseClient';
+
 
 const Signup = () => {
     // const [fullname, setFullname] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
-    const [num, setNum] = useState(5);
+
+    const {signUp} = useUser();
 
     const onSubmit = async (event) => {
-        event.preventDefault();
-        await firebaseClient.auth().createUserWithEmailAndPassword(email, password)
-            .then((data) => {
-                window.location.href = '/'
-            }).catch((error) => {
-                setError(error);
-                clearError()
-            })
-    }
-    const clearError = () => {
-        setTimeout(() => setError(null), 5000);
-    }
+      event.preventDefault(); 
+      await signUp(email, password);
+      const userFromCookie = getUserFromCookie();
+      if(userFromCookie) {
+        window.location.href = '/'
+      } else {
+        setError({message: "Email already exist"})
+      }
+
+  }
 
     const onChange = (e, setVal) => {
         setVal(e.target.value)
@@ -34,7 +36,7 @@ const Signup = () => {
             <Jumbotron style={{marginTop: '20px'}}>
             {error && (
             <Alert variant="danger">
-                {error.message} {num}
+              {error.message}
             </Alert>
             )}
             <Form>

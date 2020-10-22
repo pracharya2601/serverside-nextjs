@@ -1,26 +1,38 @@
 import {useState} from 'react';
-import {useRouter} from 'next/router';
 import Link from 'next/Link';
-import {firebaseClient} from '../../utils/firebaseClient';
 
-import {Form, Button, Container, Jumbotron} from 'react-bootstrap';
+import { useUser } from '../../utils/auth/useUser';
+import { getUserFromCookie } from '../../utils/auth/userCookies'
+
+import {Form, Button, Container, Jumbotron, Alert} from 'react-bootstrap';
 
 const Login = (props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState(null)
 
-    const router = useRouter();
-    console.log(router)
+    const {signIn} = useUser();
 
     const onSubmit = async (event) => {
         event.preventDefault(); 
-        await firebaseClient.auth().signInWithEmailAndPassword(email, password);
-        window.location.href = '/';
+        await signIn(email, password);
+        const userFromCookie = getUserFromCookie();
+        if(userFromCookie) {
+          window.location.href = '/'
+        } else {
+          setError({message: "Emaill or Password is incorrect"})
+        }
+
     }
 
     return (
         <Container>
             <Jumbotron style={{marginTop: '20px'}}>
+            {error && (
+            <Alert variant="danger">
+              {error.message}
+            </Alert>
+            )}
             <Form>
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label>Email</Form.Label>

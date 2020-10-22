@@ -1,66 +1,46 @@
-import React, {useEffect, useCallback} from 'react';
+import React from 'react';
 import Link from 'next/Link';
-import {useAuth} from '../authContext';
 
 import {Container} from 'react-bootstrap';
+import { useUser } from '../utils/auth/useUser'
 
 export default (props) => {
-    const {data} = props;
-    const {user} = useAuth();
-    console.log('main index-page', user)
+  const { user, logout } = useUser()
+  // console.log(user)
+  if (!user) {
+    return (
+      <Container>
+        <p>
+          You are not signed in.{' '}
+          <Link href={'/authentication'}>
+            <a>Sign in</a>
+          </Link>
+        </p>
+      </Container>
+    )
+  }
     return(
       <Container>
             <h1>Home Pages</h1>
-            {user && (
-              <>
-                <h2>{user.email}</h2>
-                <h2>{user.uid}</h2>
-              </>
-            ) }
-            {!user && (
-            <div>
-                {data.map((item, key) => (
-                <ul key={key}>
-                    <li>{item.name}</li>
-                    <li>{item.type}</li>
-                    <li>{item.sweet ? "Sweet" : "Not Sweet"}</li>
-                </ul>
-                ))}
-            </div>
-            )}
+            <p>You're signed in. Email: {user.email}</p>
+            <p
+              style={{
+                display: 'inline-block',
+                color: 'blue',
+                textDecoration: 'underline',
+                cursor: 'pointer',
+              }}
+              onClick={() => logout()}
+            >
+              Log out
+            </p>
             <Link href="/dashboard/maindashboard">
                 <a>Go to Dashboard</a>
+            </Link>
+            <Link href="/auth/login">
+              <a>SignIn</a>
             </Link>
         </Container>
 
     )
 }
-
-export const getStaticProps = async context => {
-    return {
-      props: {
-        data: [
-          {
-            name: "apple",
-            type: "fruit",
-            sweet: true,
-          },
-          {
-            name: "banana",
-            type: "berry",
-            sweet: true,
-          },
-          {
-            name: "Tomato",
-            type: "berry",
-            sweet: false,
-          },
-          {
-            name: "Watermelon",
-            type: "fruit",
-            sweet: true,
-          },
-        ]
-      }
-    }
-  }
