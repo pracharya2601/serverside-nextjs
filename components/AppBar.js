@@ -1,18 +1,13 @@
 import {useRouter} from 'next/router';
-import {useAuth} from '../authContext';
-import {firebaseClient} from '../utils/firebaseClient';
-
-
 import {Navbar, Nav, Button} from 'react-bootstrap';
 
+import { getUserFromCookie } from '../utils/auth/userCookies';
+import {useUser} from '../utils/auth/useUser';
+
 const AppBar =  () => {
-
-  const {user} = useAuth();
   const router = useRouter();
-
-  const onClick = async () => {
-    await firebaseClient.auth().signOut();
-  }
+  const userFromCookie = getUserFromCookie();
+  const { user, logout } = useUser()
 
   const authBtn = [
     {label: 'Login', href: "/auth/login"},
@@ -23,7 +18,7 @@ const AppBar =  () => {
     </Nav.Link>
     ))
   const logutBtn = (
-    <Nav.Link  onClick={onClick}>
+    <Nav.Link onClick={() => logout()}>
       <Button variant="outline-danger">Logout</Button>
     </Nav.Link>
   )
@@ -31,13 +26,13 @@ const AppBar =  () => {
   return(
     <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
       <Navbar.Brand onClick={() => router.push('/')} style={{cursor: 'pointer'}}>
-        {user ? `Welcome: ${user.email}` : "NextJs"}
+        {userFromCookie && user ? `Welcome: ${user.email}` : "NextJs"}
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="mr-auto" />
         <Nav>
-        {user ? logutBtn : authBtn}
+        {userFromCookie && user ? logutBtn : authBtn}
         </Nav>
       </Navbar.Collapse>
     </Navbar>

@@ -2,6 +2,7 @@ import {useState} from 'react';
 import Link from 'next/Link';
 import { useUser } from '../../utils/auth/useUser';
 import { getUserFromCookie } from '../../utils/auth/userCookies'
+import {authRouteWrapper} from '../../components/authRouteWrapper';
 
 import {Form, Button, Container, Jumbotron, Alert} from 'react-bootstrap';
 
@@ -21,7 +22,11 @@ const Signup = () => {
       if(userFromCookie) {
         window.location.href = '/'
       } else {
-        setError({message: "Email already exist"})
+        if(!email && !password) {
+          setError({message: "Enter email and password to continue"})
+        } else {
+          setError({message: "Email already exist"})
+        }
       }
 
   }
@@ -34,9 +39,10 @@ const Signup = () => {
     return (
         <Container>
             <Jumbotron style={{marginTop: '20px'}}>
+            <h1>Sign Up</h1>
             {error && (
-            <Alert variant="danger">
-              {error.message}
+            <Alert variant="danger" variant="danger" onClose={() => setError(null)} dismissible>
+              {error.message} 
             </Alert>
             )}
             <Form>
@@ -68,4 +74,4 @@ const Signup = () => {
     )
 }
 
-export default Signup;
+export default authRouteWrapper(Signup);

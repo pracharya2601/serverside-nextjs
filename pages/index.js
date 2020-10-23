@@ -4,22 +4,30 @@ import Link from 'next/Link';
 import {Container} from 'react-bootstrap';
 import { useUser } from '../utils/auth/useUser'
 
+import AppBar from '../components/AppBar';
+import App from 'next/app';
+
 export default (props) => {
   const { user, logout } = useUser()
   // console.log(user)
   if (!user) {
     return (
+      <>
+      <AppBar />
       <Container>
         <p>
           You are not signed in.{' '}
-          <Link href={'/authentication'}>
+          <Link href={'/auth/login'}>
             <a>Sign in</a>
           </Link>
         </p>
       </Container>
+      </>
     )
   }
     return(
+      <>
+      <AppBar />
       <Container>
             <h1>Home Pages</h1>
             <p>You're signed in. Email: {user.email}</p>
@@ -37,10 +45,7 @@ export default (props) => {
             <Link href="/dashboard/maindashboard">
                 <a>Go to Dashboard</a>
             </Link>
-            <Link href="/auth/login">
-              <a>SignIn</a>
-            </Link>
         </Container>
-
+        </>
     )
 }

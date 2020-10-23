@@ -1,11 +1,12 @@
 import {useState} from 'react';
-import {Form, Button, Container, Jumbotron, Alert} from 'react-bootstrap';
-
-import { useUser } from '../../utils/auth/useUser';
-
 import Link from 'next/Link';
 
-export default () => {
+import { useUser } from '../../utils/auth/useUser';
+import {authRouteWrapper} from '../../components/authRouteWrapper';
+
+import {Form, Button, Container, Jumbotron, Alert} from 'react-bootstrap';
+
+const Forgot = () => {
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState(null);
     const {sendPasswordResetEmail} = useUser();
@@ -20,8 +21,9 @@ export default () => {
     return (
         <Container>
             <Jumbotron style={{marginTop: '20px'}}>
+            <h2>Reset Password</h2>
             {message && (
-            <Alert variant="success">
+            <Alert variant="success" variant="success" onClose={() => setMessage(null)} dismissible>
               {message}
             </Alert>
             )}
@@ -44,8 +46,19 @@ export default () => {
 
                     </Form.Label>
                 </Form.Group>
+                <Form.Group controlId="formBasicPassword">
+                    <Form.Label>
+                        Go back to {' '}
+                        <Link href="/auth/login">
+                            <a>Login</a>
+                        </Link>
+
+                    </Form.Label>
+                </Form.Group>
             </Form>    
             </Jumbotron>
         </Container>
     )
 }
+
+export default authRouteWrapper(Forgot);

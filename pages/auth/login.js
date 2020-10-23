@@ -1,8 +1,10 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import Link from 'next/Link';
 
 import { useUser } from '../../utils/auth/useUser';
 import { getUserFromCookie } from '../../utils/auth/userCookies'
+
+import {authRouteWrapper} from '../../components/authRouteWrapper';
 
 import {Form, Button, Container, Jumbotron, Alert} from 'react-bootstrap';
 
@@ -24,12 +26,12 @@ const Login = (props) => {
         }
 
     }
-
     return (
         <Container>
             <Jumbotron style={{marginTop: '20px'}}>
+            <h1>Sign In</h1>
             {error && (
-            <Alert variant="danger">
+            <Alert variant="danger" variant="danger" onClose={() => setError(null)} dismissible>
               {error.message}
             </Alert>
             )}
@@ -71,4 +73,4 @@ const Login = (props) => {
     )
 }
 
-export default Login;
+export default authRouteWrapper(Login);
