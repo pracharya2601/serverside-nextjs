@@ -19,3 +19,4 @@ export const verifyIdToken = token => {
       throw error
     })
 }
+

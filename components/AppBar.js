@@ -26,7 +26,7 @@ const AppBar =  () => {
   return(
     <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
       <Navbar.Brand onClick={() => router.push('/')} style={{cursor: 'pointer'}}>
-        {userFromCookie && user ? `Welcome: ${user.email}` : "NextJs"}
+        {userFromCookie && user ? `Welcome: ${user.displayName}` : "NextJs"}
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">

@@ -1,20 +1,19 @@
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
 import firebase from 'firebase/app'
-import 'firebase/auth'
-import initFirebase from '../auth/initFirebase'
+import 'firebase/auth';
+import 'firebase/firestore';
+import {initFirebase, fire} from '../auth/initFirebase'
 import {
   removeUserCookie,
   setUserCookie,
   getUserFromCookie,
 } from './userCookies'
-import { mapUserData } from './mapUserData'
-import { route } from 'next/dist/next-server/server/router'
-
-initFirebase()
+import { mapUserData } from './mapUserData';
+initFirebase();
 
 const useUser = () => {
   const [user, setUser] = useState(null)
+  const [userDetail, setUserDetail] = useState(null);
 
   const logout = async () => {
     return firebase
@@ -40,18 +39,41 @@ const useUser = () => {
       })
   }
 
-  const signUp  = async (email, password) => {
-    return firebase
-      .auth()
-        .createUserWithEmailAndPassword(email, password)
-        .then((response) => {
-          setUser(response.user);
-          setUserCookie(response.user);
-          return response.user
-        })
-        .catch((e) => {
-          console.error("Email Already exist.")
-        })
+  // const signUp  = async (email, password) => {
+  //   return firebase
+  //     .auth()
+  //       .createUserWithEmailAndPassword(email, password)
+  //       .then((response) => {
+  //         setUser(response.user);
+  //         setUserCookie(response.user);
+  //         return response.user
+  //       })
+  //       .catch((e) => {
+  //         console.error("Email Already exist.")
+  //       })
+  // }
+
+  const signUp  = async (email, password, fullName, age, term) => {
+    try {
+      let response = await firebase.auth().createUserWithEmailAndPassword(email, password);
+      var user = await firebase.auth().currentUser;
+      await user.updateProfile({displayName: fullName})
+      let res = await fire.firestore().collection('users').doc(response.user.uid).set({
+        fullName: fullName,
+        email: email,
+        age: age,
+        hobby: [],
+        createdAt: new Date().toISOString(),
+        term: term,
+        userId: response.user.uid,
+      });
+
+      setUser(response.user);
+      setUserCookie(response.user);
+      console.log(user)
+    } catch(e) {
+      console.log(e)
+    }
   }
 
   const sendPasswordResetEmail = async email => {

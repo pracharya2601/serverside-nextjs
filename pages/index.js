@@ -5,7 +5,6 @@ import {Container} from 'react-bootstrap';
 import { useUser } from '../utils/auth/useUser'
 
 import AppBar from '../components/AppBar';
-import App from 'next/app';
 
 export default (props) => {
   const { user, logout } = useUser()
@@ -30,7 +29,7 @@ export default (props) => {
       <AppBar />
       <Container>
             <h1>Home Pages</h1>
-            <p>You're signed in. Email: {user.email}</p>
+            <p>You're signed in. Fullname: {user.displayName}</p>
             <p
               style={{
                 display: 'inline-block',
@@ -49,3 +48,4 @@ export default (props) => {
         </>
     )
 }
+
